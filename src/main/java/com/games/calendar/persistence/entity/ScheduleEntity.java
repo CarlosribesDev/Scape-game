@@ -19,8 +19,11 @@ public class ScheduleEntity {
     @Column(name="id")
     Long id;
 
-    @ManyToMany(mappedBy = "schedules")
-    Set<HourEntity> hours;
+    @ElementCollection
+    @CollectionTable(name = "schedule_hours",
+    joinColumns = @JoinColumn(name = "schedule_id"))
+    @Column(name = "hour")
+    Set<String> hours;
 
     @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "schedule",fetch = FetchType.LAZY,orphanRemoval = true)
