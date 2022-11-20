@@ -13,12 +13,12 @@ public class UserMapper implements EntityMapper<UserEntity, User> {
 
     private final ModelMapper modelMapper;
     @Override
-    public User entityToModel(UserEntity userEntity) {
+    public User entityToModel(final UserEntity userEntity) {
         return modelMapper.map(userEntity,User.class);
     }
 
     @Override
-    public UserEntity modelToEntity(User user) {
+    public UserEntity modelToEntity(final User user) {
         return modelMapper.map(user,UserEntity.class);
     }
 }

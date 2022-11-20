@@ -8,6 +8,8 @@ import com.games.calendar.persistence.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -23,9 +25,13 @@ public class UserService {
         return userMapper.entityToModel(userSaved);
     }
 
-    public User retrieveUserById(final Long id){
+    public User retrieveUserById(final Long id) {
 
         UserEntity userEntity = userRepository.findById(id).orElseThrow();
         return userMapper.entityToModel(userEntity);
+    }
+
+    public List<User> retrieveUsers(){
+        return userMapper.entitiesToModels(userRepository.findAll());
     }
 }
