@@ -1,5 +1,8 @@
 package com.games.calendar.model;
 
+import lombok.Data;
+
+@Data
 public class Booking implements JsonModel{
     private long id;
     private String hour;
