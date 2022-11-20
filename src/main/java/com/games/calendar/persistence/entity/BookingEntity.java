@@ -16,15 +16,15 @@ public class BookingEntity {
     @Column(name="id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToOne
-    @JoinColumn(name="service_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="game_id")
     private GameEntity game;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "day_id")
     private DayEntity day;
 

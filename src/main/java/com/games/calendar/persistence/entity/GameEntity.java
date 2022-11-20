@@ -1,5 +1,6 @@
 package com.games.calendar.persistence.entity;
 
+import com.games.calendar.model.constants.GameType;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
@@ -12,7 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name="service")
+@Table(name="game")
 public class GameEntity {
 
     @Id
@@ -20,8 +21,12 @@ public class GameEntity {
     @Column(name="id")
     private Long id;
 
-    @Column(name="name",nullable = false)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    @Column(name="type",nullable = false)
+    private GameType type;
+
+    @Column(name="price",nullable = false)
+    private Float price;
 
     @Column(name="duration" ,nullable = false)
     private Integer duration;
@@ -30,6 +35,4 @@ public class GameEntity {
     @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "game",cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<BookingEntity> bookings;
-
-
 }
