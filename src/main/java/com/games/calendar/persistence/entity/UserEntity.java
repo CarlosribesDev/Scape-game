@@ -27,13 +27,15 @@ public class UserEntity {
     @Column(name="surname", nullable = false)
     private String surname;
 
-    @Column(name="email", nullable = false)
+    @Column(name="password",nullable = false)
+    private String password;
+
+    @Column(name="email",unique = true, nullable = false)
     private String email;
 
-    @Column(name="telephone", nullable = false)
+    @Column(name="telephone",unique = true, nullable = false)
     private String telephone;
 
-    @Enumerated(EnumType.STRING)
     @Column(name="role", nullable = false)
     private RoleType role;
 
