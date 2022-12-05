@@ -33,10 +33,11 @@ public class UserEntity {
     @Column(name="email",unique = true, nullable = false)
     private String email;
 
-    @Column(name="telephone",unique = true, nullable = false)
+    @Column(name="telephone", nullable = false)
     private String telephone;
 
     @Column(name="role", nullable = false)
+    @Enumerated(EnumType.STRING)
     private RoleType role;
 
     @BatchSize(size = 10)

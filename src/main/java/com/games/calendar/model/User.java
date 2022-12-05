@@ -10,6 +10,7 @@ public class User implements JsonModel{
     private long id;
     private String name;
     private String surname;
+    private String password;
     private RoleType role;
     private String email;
     private String telephone;

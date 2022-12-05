@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin
 public class UserController {
 
     private final UserService userService;
@@ -17,6 +18,11 @@ public class UserController {
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     public ResponseEntity<User> getUser(@PathVariable final Long id){
         return ResponseEntity.ok(this.userService.retrieveUserById(id));
+    }
+
+    @RequestMapping(value = "/user/checkEmail/{email}", method = RequestMethod.GET)
+    public ResponseEntity<Boolean> checkEmail(@PathVariable final String email){
+        return ResponseEntity.ok(this.userService.emailExist(email));
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)

@@ -19,8 +19,12 @@ public class UserService {
     private final UserMapper userMapper;
 
     public User saveUser(final User user){
+        Assert.isTrue(this.userRepository.findByTelephone(user.getTelephone()).isEmpty(), "Ya existe un usuario con ese teléfono");
+        Assert.isTrue(userRepository.findByEmail(user.getEmail()).isEmpty(), "Ya existe un usuario con ese email");
+
         user.setRole(RoleType.USER);
         UserEntity userSaved = this.userRepository.save(this.userMapper.modelToEntity(user));
+
         return this.userMapper.entityToModel(userSaved);
     }
     public User updateUser(final Long id,final User user){
@@ -42,5 +46,9 @@ public class UserService {
     public void deleteUser(final Long id){
         Assert.isTrue(this.userRepository.existsById(id),"User dont exist");
         this.userRepository.deleteById(id);
+    }
+
+    public boolean emailExist(String email){
+        return this.userRepository.existsByEmail(email);
     }
 }
