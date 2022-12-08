@@ -28,8 +28,11 @@ public class SecurityConfig  {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf().disable()
+
             .authorizeRequests()
             .antMatchers("/auth/**")
+            .permitAll()
+            .antMatchers("/user/**")
             .permitAll()
             .anyRequest()
             .authenticated()
@@ -54,8 +57,7 @@ public class SecurityConfig  {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-        //return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean

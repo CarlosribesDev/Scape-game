@@ -3,9 +3,13 @@ package com.games.calendar.service;
 import com.games.calendar.mapper.UserMapper;
 import com.games.calendar.model.User;
 import com.games.calendar.model.constants.RoleType;
+import com.games.calendar.persistence.entity.UserAuthEntity;
 import com.games.calendar.persistence.entity.UserEntity;
+import com.games.calendar.persistence.repository.UserAuthRepository;
 import com.games.calendar.persistence.repository.UserRepository;
+import com.games.calendar.request.NewUserRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -16,14 +20,24 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserAuthRepository userAuthRepository;
     private final UserMapper userMapper;
 
-    public User saveUser(final User user){
-        Assert.isTrue(this.userRepository.findByTelephone(user.getTelephone()).isEmpty(), "Ya existe un usuario con ese teléfono");
-        Assert.isTrue(userRepository.findByEmail(user.getEmail()).isEmpty(), "Ya existe un usuario con ese email");
+    private final PasswordEncoder passwordEncoder;
 
-        user.setRole(RoleType.USER);
-        UserEntity userSaved = this.userRepository.save(this.userMapper.modelToEntity(user));
+    public User saveUser(final NewUserRequest userRequest){
+        Assert.isTrue(!this.userRepository.existsByTelephone(userRequest.getTelephone()), "Ya existe un usuario con ese teléfono");
+        Assert.isTrue(!this.userRepository.existsByEmail(userRequest.getEmail()), "Ya existe un usuario con ese email");
+        Assert.isTrue(!this.userAuthRepository.existsByUsername(userRequest.getUsername()), "Nombre de usuario ya existe");
+
+        UserEntity userSaved = this.userRepository.save(userMapper.newUserRequestToUserEntity(userRequest));
+
+        UserAuthEntity newAuth = new UserAuthEntity();
+        newAuth.setUser(userSaved);
+        newAuth.setRole(RoleType.USER);
+        newAuth.setUsername(userRequest.getUsername());
+        newAuth.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        this.userAuthRepository.save(newAuth);
 
         return this.userMapper.entityToModel(userSaved);
     }
@@ -50,5 +64,13 @@ public class UserService {
 
     public boolean emailExist(String email){
         return this.userRepository.existsByEmail(email);
+    }
+
+    public boolean usernameExist(String username){
+        return this.userAuthRepository.existsByUsername(username);
+    }
+
+    public boolean telephoneExist(String telephone){
+        return this.userRepository.existsByTelephone(telephone);
     }
 }

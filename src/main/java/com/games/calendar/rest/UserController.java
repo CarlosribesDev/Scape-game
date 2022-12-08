@@ -1,6 +1,7 @@
 package com.games.calendar.rest;
 
 import com.games.calendar.model.User;
+import com.games.calendar.request.NewUserRequest;
 import com.games.calendar.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +21,14 @@ public class UserController {
         return ResponseEntity.ok(this.userService.retrieveUserById(id));
     }
 
-    @RequestMapping(value = "/user/checkEmail/{email}", method = RequestMethod.GET)
-    public ResponseEntity<Boolean> checkEmail(@PathVariable final String email){
-        return ResponseEntity.ok(this.userService.emailExist(email));
-    }
-
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ResponseEntity<List<User>> getUsers(){
         return ResponseEntity.ok(this.userService.retrieveUsers());
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
-    public ResponseEntity<User> saveUser(@RequestBody final User user){
-        return ResponseEntity.ok(this.userService.saveUser(user));
+    public ResponseEntity<User> saveUser(@RequestBody final NewUserRequest newUserRequest){
+        return ResponseEntity.ok(this.userService.saveUser(newUserRequest));
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
@@ -44,6 +40,21 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable final Long id){
         this.userService.deleteUser(id);
         return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/user/check/email/{email}", method = RequestMethod.GET)
+    public ResponseEntity<Boolean> checkEmail(@PathVariable final String email){
+        return ResponseEntity.ok(this.userService.emailExist(email));
+    }
+
+    @RequestMapping(value = "/user/check/username/{username}", method = RequestMethod.GET)
+    public ResponseEntity<Boolean> checkUsername(@PathVariable final String username){
+        return ResponseEntity.ok(this.userService.usernameExist(username));
+    }
+
+    @RequestMapping(value = "/user/check/telephone/{telephone}", method = RequestMethod.GET)
+    public ResponseEntity<Boolean> checkTelephone(@PathVariable final String telephone){
+        return ResponseEntity.ok(this.userService.telephoneExist(telephone));
     }
 
 

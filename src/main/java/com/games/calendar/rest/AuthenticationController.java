@@ -1,7 +1,7 @@
 package com.games.calendar.rest;
 
-import com.games.calendar.persistence.entity.UserAuth;
-import com.games.calendar.security.AuthRequest;
+import com.games.calendar.persistence.entity.UserAuthEntity;
+import com.games.calendar.request.AuthRequest;
 import com.games.calendar.security.JwtUtils;
 
 import com.games.calendar.service.AuthService;
@@ -31,7 +31,7 @@ public class AuthenticationController {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 
-        final UserAuth user = authService.loadUserByUsername(authRequest.getUsername());
+        final UserAuthEntity user = authService.loadUserByUsername(authRequest.getUsername());
 
         if(user != null){
             return ResponseEntity.ok(jwtUtils.generateToken(user));
