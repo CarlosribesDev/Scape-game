@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin (origins = "*" , exposedHeaders = "**")
 public class ScheduleController {
 
     private final ScheduleService scheduleService;

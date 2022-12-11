@@ -1,4 +1,6 @@
-
+server:
+    servlet:
+      context-path: /api
 spring:
   datasource:
     url: jdbc:oracle:thin:@//localhost:1521/xe
@@ -13,4 +15,4 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    show-sql: true
+    show-sql: false

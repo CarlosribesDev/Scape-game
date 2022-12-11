@@ -11,6 +11,7 @@ public class User implements JsonModel{
     private String name;
     private String surname;
     private String username;
+    private RoleType role;
     private String email;
     private String telephone;
     private Set<Booking> bookings;

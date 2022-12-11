@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 public enum RoleType implements JsonModel {
 
-    USER,
-    ADMIN
+    ROLE_USER,
+    ROLE_ADMIN
 }

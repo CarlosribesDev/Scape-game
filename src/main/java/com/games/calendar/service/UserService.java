@@ -34,7 +34,7 @@ public class UserService {
 
         UserAuthEntity newAuth = new UserAuthEntity();
         newAuth.setUser(userSaved);
-        newAuth.setRole(RoleType.USER);
+        newAuth.setRole(RoleType.ROLE_USER);
         newAuth.setUsername(userRequest.getUsername());
         newAuth.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         this.userAuthRepository.save(newAuth);

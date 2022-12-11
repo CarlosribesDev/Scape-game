@@ -4,11 +4,14 @@ import com.games.calendar.model.User;
 import com.games.calendar.request.NewUserRequest;
 import com.games.calendar.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Log4j2
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
@@ -28,7 +31,7 @@ public class UserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public ResponseEntity<User> saveUser(@RequestBody final NewUserRequest newUserRequest){
-        return ResponseEntity.ok(this.userService.saveUser(newUserRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.saveUser(newUserRequest));
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)

@@ -2,6 +2,7 @@ package com.games.calendar.mapper;
 
 
 import com.games.calendar.model.User;
+import com.games.calendar.model.constants.RoleType;
 import com.games.calendar.persistence.entity.UserEntity;
 import com.games.calendar.persistence.repository.UserAuthRepository;
 import com.games.calendar.request.NewUserRequest;
@@ -19,8 +20,8 @@ public class UserMapper implements EntityMapper<UserEntity, User> {
     public User entityToModel(final UserEntity userEntity) {
 
         User user = modelMapper.map(userEntity,User.class);
-        String username = userAuthRepository.findUsernameByUserId(user.getId()).get(0);
-        user.setUsername(username);
+        user.setUsername(userAuthRepository.findUsernameByUserId(user.getId()).get(0));
+        user.setRole(RoleType.valueOf(userAuthRepository.findRoleByUserId(user.getId()).get(0)));
 
         return user;
     }

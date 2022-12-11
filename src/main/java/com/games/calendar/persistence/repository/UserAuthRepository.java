@@ -16,9 +16,14 @@ public interface UserAuthRepository extends CrudRepository<UserAuthEntity,Long> 
     """
     select au.username FROM user_auth au
     where au.user_id = :userId
-    
-    """,
-            nativeQuery = true)
+    """,nativeQuery = true)
     List<String> findUsernameByUserId(@Param("userId")final Long userId);
+
+    @Query(value =
+            """
+            select au.role FROM user_auth au
+            where au.user_id = :userId
+            """,nativeQuery = true)
+    List<String> findRoleByUserId(@Param("userId")final Long userId);
     boolean existsByUsername( final String username);
 }

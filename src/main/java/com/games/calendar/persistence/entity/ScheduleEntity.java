@@ -29,6 +29,6 @@ public class ScheduleEntity {
     @OneToMany(mappedBy = "schedule",fetch = FetchType.LAZY,orphanRemoval = true)
     Set<DayEntity> days;
 
-    @Column(name="name")
+    @Column(name="name" , unique = true)
     String name;
 }
