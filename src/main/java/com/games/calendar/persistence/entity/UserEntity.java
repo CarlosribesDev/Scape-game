@@ -32,9 +32,8 @@ public class UserEntity {
     @Column(name="telephone",unique = true, nullable = false)
     private String telephone;
 
-    @BatchSize(size = 10)
-    @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id")
     private Set<BookingEntity> bookings;
 
 

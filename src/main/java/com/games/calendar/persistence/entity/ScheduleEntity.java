@@ -25,10 +25,6 @@ public class ScheduleEntity {
     @Column(name = "hour")
     Set<String> hours;
 
-    @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(mappedBy = "schedule",fetch = FetchType.LAZY,orphanRemoval = true)
-    Set<DayEntity> days;
-
     @Column(name="name" , unique = true)
     String name;
 }

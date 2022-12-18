@@ -7,7 +7,7 @@ public class Booking implements JsonModel{
     private long id;
     private String hour;
     private boolean isBusy;
-    private Day day;
+    private int day_id;
     private Game game;
     private long userId;
 }

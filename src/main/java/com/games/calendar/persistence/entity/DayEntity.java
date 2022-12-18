@@ -26,13 +26,6 @@ public class DayEntity {
     @OneToMany(mappedBy = "day", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<BookingEntity> bookings;
 
-    @ManyToOne
-    @JoinColumn(name="schedule_id")
-    private ScheduleEntity schedule;
-
-    @Column(name="IS_HOLIDAY")
-    private Boolean isHoliday;
-
     @Column(name="DAY_DATE")
     private LocalDate date;
 }
