@@ -3,7 +3,6 @@ package com.games.calendar.service;
 import com.games.calendar.mapper.BookingMapper;
 import com.games.calendar.mapper.DayMapper;
 import com.games.calendar.model.Day;
-import com.games.calendar.model.Schedule;
 import com.games.calendar.persistence.entity.BookingEntity;
 import com.games.calendar.persistence.entity.DayEntity;
 import com.games.calendar.persistence.repository.BookingRepository;
@@ -12,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.transaction.Transactional;
+
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -38,19 +37,38 @@ public class DayService {
         return this.dayMapper.entityToModel(dayUpdated);
     }
 
-    @Transactional
     public List<Day> updateDays(final List<Day> days){
 
         days.forEach(day -> {
 
-            DayEntity dayEntity = this.dayRepository.findById(day.getId()).orElseThrow();
+            final DayEntity dayEntity = this.dayRepository.findById(day.getId()).orElseThrow();
+
+            final Set<BookingEntity> oldBookings = dayEntity.getBookings();
+
+            if (oldBookings != null && oldBookings.size() > 0){
+                this.bookingRepository.deleteAll(oldBookings);
+                dayEntity.setBookings(null);
+                final Set<BookingEntity> newBookings = new HashSet<>();
+                day.getBookings().forEach(booking -> {
+                    final BookingEntity newBooking = this.bookingMapper.modelToEntity(booking);
+                    newBooking.setUser(null);
+                    newBooking.setDay(dayEntity);
+                    newBooking.setDate(day.getDate());
+                    newBookings.add(newBooking);
+                });
+
+                dayEntity.setBookings(newBookings);
+                this.dayRepository.save(dayEntity);
+                return;
+            }
 
             day.getBookings().forEach(booking -> {
-                BookingEntity newBooking = this.bookingMapper.modelToEntity(booking);
+                final BookingEntity newBooking = this.bookingMapper.modelToEntity(booking);
+                newBooking.setUser(null);
                 newBooking.setDay(dayEntity);
+                newBooking.setDate(day.getDate());
                 this.bookingRepository.save(newBooking);
             });
-
         });
 
         LocalDate date = days.get(0).getDate();

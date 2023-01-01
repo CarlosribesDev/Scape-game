@@ -13,7 +13,11 @@ public class GameMapper implements EntityMapper<GameEntity, Game> {
     private final ModelMapper modelMapper;
     @Override
     public Game entityToModel(final GameEntity gameEntity) {
-        return modelMapper.map(gameEntity,Game.class);
+
+        final Game game = modelMapper.map(gameEntity,Game.class);
+        game.setName(gameEntity.getName().getTranslation());
+
+        return game;
     }
 
     @Override

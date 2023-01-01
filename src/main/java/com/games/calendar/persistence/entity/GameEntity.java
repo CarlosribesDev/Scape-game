@@ -1,11 +1,8 @@
 package com.games.calendar.persistence.entity;
 
-import com.games.calendar.model.constants.GameType;
+import com.games.calendar.model.constants.GameName;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -22,17 +19,18 @@ public class GameEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="type",nullable = false)
-    private GameType type;
+    @Column(name="name",nullable = false)
+    private GameName name;
 
     @Column(name="price",nullable = false)
     private Float price;
 
-    @Column(name="duration" ,nullable = false)
+    @Column(name="description")
+    private String description;
+
+    @Column(name="duration")
     private Integer duration;
 
-    @BatchSize(size = 1000)
-    @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(mappedBy = "game",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "game")
     private Set<BookingEntity> bookings;
 }

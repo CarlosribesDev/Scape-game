@@ -26,6 +26,6 @@ public class DayEntity {
     @OneToMany(mappedBy = "day", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<BookingEntity> bookings;
 
-    @Column(name="DAY_DATE")
+    @Column(name="DAY_DATE", unique = true)
     private LocalDate date;
 }
