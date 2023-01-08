@@ -1,6 +1,7 @@
 package com.games.calendar.rest;
 
 import com.games.calendar.model.Booking;
+import com.games.calendar.request.UserBookingRequest;
 import com.games.calendar.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +31,14 @@ public class BookingController {
         return ResponseEntity.ok(this.bookingService.saveBooking(booking));
     }
 
+//    @RequestMapping(value = "/booking/{id}", method = RequestMethod.PUT)
+//    public ResponseEntity<Booking> updateBooking(@PathVariable final Long id, @RequestBody final Booking booking){
+//        return ResponseEntity.ok(this.bookingService.updateBooking(id, booking));
+//    }
+
     @RequestMapping(value = "/booking/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Booking> updateBooking(@PathVariable final Long id, @RequestBody final Booking booking){
-        return ResponseEntity.ok(this.bookingService.updateBooking(id, booking));
+    public ResponseEntity<Booking> updateBookingUser(@PathVariable final Long id, @RequestBody final UserBookingRequest userBookingRequest){
+        return ResponseEntity.ok(this.bookingService.updateBookingUser(id, userBookingRequest));
     }
 
     @RequestMapping(value = "/booking/{id}", method = RequestMethod.DELETE)
