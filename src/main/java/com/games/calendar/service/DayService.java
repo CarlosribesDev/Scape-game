@@ -48,6 +48,7 @@ public class DayService {
             if (oldBookings != null && oldBookings.size() > 0){
                 this.bookingRepository.deleteAll(oldBookings);
                 dayEntity.setBookings(null);
+
                 final Set<BookingEntity> newBookings = new HashSet<>();
                 day.getBookings().forEach(booking -> {
                     final BookingEntity newBooking = this.bookingMapper.modelToEntity(booking);
@@ -100,14 +101,25 @@ public class DayService {
             if(daysByDate.containsKey(dayDate)){
                 daysToRetrieve.add(daysByDate.get(dayDate).get(0));
             }else{
-                Day newDay = new Day();
+                final Day newDay = new Day();
                 newDay.setDate(dayDate);
-
-                DayEntity daySaved = this.dayRepository.save(this.dayMapper.modelToEntity(newDay));
+                newDay.setBusy(false);
+                final DayEntity daySaved = this.dayRepository.save(this.dayMapper.modelToEntity(newDay));
 
                 daysToRetrieve.add(daySaved);
             }
+
+
         }
+
+        daysToRetrieve.forEach(day -> {
+            if(!day.getIsBusy()){
+                if(day.getDate().isBefore(LocalDate.now())) {
+                    day.setIsBusy(true);
+                    this.dayRepository.save(day);
+                }
+            }
+        });
 
         return this.dayMapper.entitiesToModels(daysToRetrieve);
     }

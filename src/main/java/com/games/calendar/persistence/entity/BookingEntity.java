@@ -34,7 +34,4 @@ public class BookingEntity {
 
     @Column(name="hour")
     private String hour;
-
-    @Column(name="is_busy")
-    private Boolean isBusy;
 }

@@ -13,11 +13,17 @@ public class DayMapper implements EntityMapper<DayEntity, Day> {
     private final ModelMapper modelMapper;
     @Override
     public Day entityToModel(final DayEntity dayEntity) {
-        return modelMapper.map(dayEntity,Day.class);
+        final Day day = modelMapper.map(dayEntity,Day.class);
+        day.setBusy(dayEntity.getIsBusy());
+
+        return day;
     }
 
     @Override
     public DayEntity modelToEntity(final Day day) {
-        return modelMapper.map(day,DayEntity.class);
+        final DayEntity dayEntity = modelMapper.map(day,DayEntity.class);
+        dayEntity.setIsBusy(day.isBusy());
+
+        return dayEntity;
     }
 }

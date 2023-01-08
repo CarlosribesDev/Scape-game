@@ -11,4 +11,5 @@ public class Day {
     private long id;
     private LocalDate date;
     private List<Booking> bookings;
+    private boolean isBusy;
 }

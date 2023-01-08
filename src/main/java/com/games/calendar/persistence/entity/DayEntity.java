@@ -28,4 +28,7 @@ public class DayEntity {
 
     @Column(name="DAY_DATE", unique = true)
     private LocalDate date;
+
+    @Column(name="is_busy")
+    private Boolean isBusy;
 }

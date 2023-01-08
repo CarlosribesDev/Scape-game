@@ -8,8 +8,7 @@ import java.time.LocalDate;
 public class Booking implements JsonModel{
     private long id;
     private String hour;
-    private boolean isBusy;
-    private int day_id;
+    private int dayId;
     private LocalDate date;
     private Game game;
     private long userId;

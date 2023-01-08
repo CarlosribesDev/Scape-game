@@ -4,9 +4,11 @@ import com.games.calendar.mapper.BookingMapper;
 import com.games.calendar.model.Booking;
 import com.games.calendar.model.Game;
 import com.games.calendar.persistence.entity.BookingEntity;
+import com.games.calendar.persistence.entity.DayEntity;
 import com.games.calendar.persistence.entity.GameEntity;
 import com.games.calendar.persistence.entity.UserEntity;
 import com.games.calendar.persistence.repository.BookingRepository;
+import com.games.calendar.persistence.repository.DayRepository;
 import com.games.calendar.persistence.repository.GameRepository;
 import com.games.calendar.persistence.repository.UserRepository;
 import com.games.calendar.request.UserBookingRequest;
@@ -27,6 +29,8 @@ public class BookingService {
 
     private final UserRepository userRepository;
     private final GameRepository gameRepository;
+
+    private final DayRepository dayRepository;
 
 
     public Booking saveBooking(final Booking booking){
@@ -52,7 +56,14 @@ public class BookingService {
         final String subject = "Su reserva ha sido aceptada";
         final String text = "Te es peramos el " + booking.getDate() + " a las " + booking.getHour()  + ". Nuestra dirección es C/Antonio Vera nº34 Elda";
 
-        this.emailService.sendEmail(user.getEmail(), subject ,text);
+      //  this.emailService.sendEmail(user.getEmail(), subject ,text);
+
+        final DayEntity day = booking.getDay();
+
+        if(day.getBookings().stream().noneMatch(bookingEntity -> bookingEntity.getUser() == null)){
+            day.setIsBusy(true);
+            this.dayRepository.save(day);
+        }
 
         return this.bookingMapper.entityToModel(this.bookingRepository.save(booking));
     }
