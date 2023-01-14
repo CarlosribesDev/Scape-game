@@ -54,11 +54,4 @@ public class UserController {
     public ResponseEntity<Boolean> checkUsername(@PathVariable final String username){
         return ResponseEntity.ok(this.userService.usernameExist(username));
     }
-
-    @RequestMapping(value = "/user/check/telephone/{telephone}", method = RequestMethod.GET)
-    public ResponseEntity<Boolean> checkTelephone(@PathVariable final String telephone){
-        return ResponseEntity.ok(this.userService.telephoneExist(telephone));
-    }
-
-
 }

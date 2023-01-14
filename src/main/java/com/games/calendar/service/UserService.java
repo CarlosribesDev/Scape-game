@@ -26,7 +26,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public User saveUser(final NewUserRequest userRequest){
-        Assert.isTrue(!this.userRepository.existsByTelephone(userRequest.getTelephone()), "Ya existe un usuario con ese teléfono");
         Assert.isTrue(!this.userRepository.existsByEmail(userRequest.getEmail()), "Ya existe un usuario con ese email");
         Assert.isTrue(!this.userAuthRepository.existsByUsername(userRequest.getUsername()), "Nombre de usuario ya existe");
 
@@ -68,9 +67,5 @@ public class UserService {
 
     public boolean usernameExist(String username){
         return this.userAuthRepository.existsByUsername(username);
-    }
-
-    public boolean telephoneExist(String telephone){
-        return this.userRepository.existsByTelephone(telephone);
     }
 }

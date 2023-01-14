@@ -13,8 +13,6 @@ import java.util.Optional;
 @Repository
 public interface DayRepository extends CrudRepository<DayEntity,Long> {
 
-    Optional<DayEntity> getByDate(LocalDate date);
-
     @Query(value =
             """
             select * FROM day

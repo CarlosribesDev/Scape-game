@@ -17,10 +17,10 @@ spring:
         format_sql: true
     show-sql: false
   mail:
-    host: smtp.gmail.com
+    host: smtp.mail.yahoo.com
     port: 587
-    username: host.proyecto10@gmail.com
-    password: aqmcbhazghaofpuc
+    username: host.proyecto@yahoo.com
+    password: host123.
     properties:
       mail:
         transport:

@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 public class DayService {
 
     private final DayRepository dayRepository;
-
-    private final BookingRepository bookingRepository;
     private final DayMapper dayMapper;
     private final BookingMapper bookingMapper;
+
+    private final BookingRepository bookingRepository;
 
     public Day saveDay(final Day day){
         DayEntity daySaved = this.dayRepository.save(this.dayMapper.modelToEntity(day));
@@ -40,39 +40,28 @@ public class DayService {
     public List<Day> updateDays(final List<Day> days){
 
         days.forEach(day -> {
-
             final DayEntity dayEntity = this.dayRepository.findById(day.getId()).orElseThrow();
 
-            final Set<BookingEntity> oldBookings = dayEntity.getBookings();
-
-            if (oldBookings != null && oldBookings.size() > 0){
-                this.bookingRepository.deleteAll(oldBookings);
-                dayEntity.setBookings(null);
-
-                final Set<BookingEntity> newBookings = new HashSet<>();
-                day.getBookings().forEach(booking -> {
-                    final BookingEntity newBooking = this.bookingMapper.modelToEntity(booking);
-                    newBooking.setUser(null);
-                    newBooking.setDay(dayEntity);
-                    newBooking.setDate(day.getDate());
-                    newBookings.add(newBooking);
-                });
-
-                dayEntity.setBookings(newBookings);
-                this.dayRepository.save(dayEntity);
-                return;
+            if(!dayEntity.getBookings().isEmpty()){
+                this.bookingRepository.deleteAll(dayEntity.getBookings());
             }
 
+            final Set<BookingEntity> bookingEntities = new HashSet<>();
             day.getBookings().forEach(booking -> {
                 final BookingEntity newBooking = this.bookingMapper.modelToEntity(booking);
                 newBooking.setUser(null);
                 newBooking.setDay(dayEntity);
                 newBooking.setDate(day.getDate());
-                this.bookingRepository.save(newBooking);
+                bookingEntities.add(newBooking);
             });
+
+            dayEntity.getBookings().clear();
+            dayEntity.getBookings().addAll(bookingEntities);
+
+            this.dayRepository.save(dayEntity);
         });
 
-        LocalDate date = days.get(0).getDate();
+        final LocalDate date = days.get(0).getDate();
 
         int year = date.getYear();
         int month = date.getMonthValue();
@@ -108,8 +97,6 @@ public class DayService {
 
                 daysToRetrieve.add(daySaved);
             }
-
-
         }
 
         daysToRetrieve.forEach(day -> {

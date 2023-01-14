@@ -2,7 +2,6 @@ package com.games.calendar.service;
 
 import com.games.calendar.mapper.BookingMapper;
 import com.games.calendar.model.Booking;
-import com.games.calendar.model.Game;
 import com.games.calendar.persistence.entity.BookingEntity;
 import com.games.calendar.persistence.entity.DayEntity;
 import com.games.calendar.persistence.entity.GameEntity;
@@ -33,6 +32,8 @@ public class BookingService {
     private final DayRepository dayRepository;
 
 
+
+
     public Booking saveBooking(final Booking booking){
         BookingEntity bookingSaved = this.bookingRepository.save(this.bookingMapper.modelToEntity(booking));
         return this.bookingMapper.entityToModel(bookingSaved);
@@ -56,7 +57,7 @@ public class BookingService {
         final String subject = "Su reserva ha sido aceptada";
         final String text = "Te es peramos el " + booking.getDate() + " a las " + booking.getHour()  + ". Nuestra dirección es C/Antonio Vera nº34 Elda";
 
-      //  this.emailService.sendEmail(user.getEmail(), subject ,text);
+ //       this.emailService.sendEmail(user.getEmail(), subject ,text);
 
         final DayEntity day = booking.getDay();
 

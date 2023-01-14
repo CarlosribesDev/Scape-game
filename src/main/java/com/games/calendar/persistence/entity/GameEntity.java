@@ -25,6 +25,10 @@ public class GameEntity {
     @Column(name="price",nullable = false)
     private Float price;
 
+    @Column(name="title")
+    private String title;
+
+    @Lob
     @Column(name="description")
     private String description;
 

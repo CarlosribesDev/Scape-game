@@ -8,5 +8,6 @@ public class Game implements JsonModel{
     private int duration;
     private String name;
     private String description;
+    private String title;
     private float price;
 }

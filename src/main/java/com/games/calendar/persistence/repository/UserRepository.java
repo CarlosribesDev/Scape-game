@@ -10,5 +10,5 @@ public interface UserRepository extends CrudRepository<UserEntity,Long>{
 
 
     boolean existsByEmail(final String email);
-    boolean existsByTelephone(final String telephone);
+
 }

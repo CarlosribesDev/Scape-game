@@ -4,8 +4,11 @@ import com.games.calendar.mapper.UserMapper;
 import com.games.calendar.model.User;
 import com.games.calendar.persistence.entity.UserAuthEntity;
 import com.games.calendar.persistence.entity.UserEntity;
+import com.games.calendar.persistence.repository.UserAuthRepository;
+import com.games.calendar.persistence.repository.UserRepository;
 import com.games.calendar.request.AuthRequest;
 import com.games.calendar.request.JwtResponse;
+import com.games.calendar.request.RoleResponse;
 import com.games.calendar.security.JwtUtils;
 
 import com.games.calendar.service.AuthService;
@@ -28,9 +31,11 @@ import java.security.Principal;
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
+
+    private final UserRepository userRepository;
+    private final UserAuthRepository userAuthRepository;
     private final AuthService authService;
     private final JwtUtils jwtUtils;
-
     private final UserMapper userMapper;
 
 
@@ -53,10 +58,18 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Some error occurred");
     }
 
+    @RequestMapping(value = "/role/{id}" , method = RequestMethod.GET)
+    public ResponseEntity<RoleResponse> getRole(@PathVariable final Long id){
+        final String role = userAuthRepository.findRoleByUserId(id).get(0);
+
+        RoleResponse response = new RoleResponse(role);
+        return ResponseEntity.ok(response);
+    }
+
     @RequestMapping(value = "/current-user" , method = RequestMethod.GET)
     public ResponseEntity<User> getUserData(Principal principal){
-        UserAuthEntity userAuth = this.authService.loadUserByUsername(principal.getName());
-        UserEntity userEntity = userAuth.getUser();
+        final UserAuthEntity userAuth = this.authService.loadUserByUsername(principal.getName());
+        final UserEntity userEntity = userAuth.getUser();
 
         return ResponseEntity.ok(this.userMapper.entityToModel(userEntity));
     }

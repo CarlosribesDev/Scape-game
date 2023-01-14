@@ -29,7 +29,7 @@ public class UserEntity {
     @Column(name="telephone",unique = true, nullable = false)
     private String telephone;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     private Set<BookingEntity> bookings;
 
 
